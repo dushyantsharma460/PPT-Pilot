@@ -113,7 +113,9 @@ export function ThemeProvider({
   }
 
   const toggleTheme = () => {
-    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
+    const nextMode: ThemeMode =
+      theme === 'light' ? 'dark' : theme === 'dark' ? 'auto' : 'light'
+    setTheme(nextMode)
   }
 
   return (
