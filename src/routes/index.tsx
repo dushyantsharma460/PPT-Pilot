@@ -1,3 +1,4 @@
+import ThemeToggle from '#/components/ThemeToggle'
 import { authClient } from '#/lib/auth-client'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -8,7 +9,7 @@ function App() {
   console.log(data)
   return (
     <div>
-      Main Page of the Website
+      <ThemeToggle />
     </div>
   )
 }

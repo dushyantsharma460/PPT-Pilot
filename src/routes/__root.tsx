@@ -8,6 +8,7 @@ import {
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
+import { ThemeProvider } from '#/providers/theme-provider'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -47,7 +48,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
-        {children}
+        <ThemeProvider defaultTheme="auto">
+          {children}
+        </ThemeProvider>
         <Scripts />
       </body>
     </html>
