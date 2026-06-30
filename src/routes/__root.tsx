@@ -1,5 +1,6 @@
 import {
   HeadContent,
+  Outlet,
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
@@ -9,6 +10,7 @@ import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
 import { ThemeProvider } from '#/providers/theme-provider'
+import Navbar from '#/components/Navbar'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -37,8 +39,18 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
     ],
   }),
+  component: RootLayout,
   shellComponent: RootDocument,
 })
+
+function RootLayout() {
+  return (
+    <div>
+      <Navbar />
+      <Outlet />
+    </div>
+  )
+}
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
