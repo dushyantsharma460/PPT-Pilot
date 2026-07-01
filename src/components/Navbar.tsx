@@ -10,7 +10,6 @@ import {
 } from 'lucide-react'
 
 import ThemeToggle from './ThemeToggle'
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Button } from './ui/button'
 import {
   DropdownMenu,
@@ -40,6 +39,40 @@ const primaryButtonClass =
 
 const iconButtonClass =
   'h-10 w-10 rounded-xl text-zinc-300 hover:bg-white/5 hover:text-white'
+
+const profileButtonClass =
+  'rounded-full transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/40'
+
+function getUserInitials(name?: string | null, email?: string | null) {
+  const source = name?.trim() || email?.trim() || ''
+  return source.charAt(0).toUpperCase() || 'U'
+}
+
+function UserAvatar({
+  user,
+  className = 'h-10 w-10',
+}: {
+  user: { name?: string | null; email?: string | null; image?: string | null }
+  className?: string
+}) {
+  const initials = getUserInitials(user.name, user.email)
+
+  return (
+    <div
+      className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-white/5 font-medium text-white ${className}`}
+    >
+      {user.image ? (
+        <img
+          src={user.image}
+          alt={user.name ?? 'User profile'}
+          className="h-full w-full object-cover"
+        />
+      ) : (
+        <span className="text-sm">{initials}</span>
+      )}
+    </div>
+  )
+}
 
 export default function Navbar() {
   const router = useRouter()
@@ -109,21 +142,13 @@ export default function Navbar() {
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className={iconButtonClass}
+                <button
+                  type="button"
+                  aria-label="Open account menu"
+                  className={profileButtonClass}
                 >
-                  <Avatar className="h-10 w-10 border border-white/10">
-                    <AvatarImage
-                      src={session.user.image || ''}
-                      alt={session.user.name}
-                    />
-                    <AvatarFallback className="bg-white/5 font-medium text-white">
-                      {session.user.name?.charAt(0).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
+                  <UserAvatar user={session.user} />
+                </button>
               </DropdownMenuTrigger>
 
               <DropdownMenuContent
@@ -132,12 +157,7 @@ export default function Navbar() {
               >
                 <DropdownMenuLabel className="pb-3 text-white">
                   <div className="flex items-center gap-3">
-                    <Avatar className="h-10 w-10 border border-white/10">
-                      <AvatarImage src={session.user.image || ''} />
-                      <AvatarFallback className="bg-white/5 text-white">
-                        {session.user.name?.charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
+                    <UserAvatar user={session.user} />
                     <div className="space-y-1">
                       <h4 className="font-medium leading-none text-white">
                         {session.user.name}
