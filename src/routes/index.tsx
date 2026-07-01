@@ -1,17 +1,36 @@
-import { authClient } from '#/lib/auth-client'
-import { createFileRoute } from '@tanstack/react-router'
+import { authClient } from "#/lib/auth-client";
+import { getSession } from "#/lib/auth.function";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/')({ component: App })
+export const Route = createFileRoute("/")({
+  beforeLoad: async ({ location }) => {
+    const session = await getSession();
+
+    if (!session) {
+      throw redirect({
+        to: "/login",
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+
+    return {
+      user: session.user,
+    };
+  },
+
+  component: App,
+});
 
 function App() {
-  authClient.useSession()
+  const { data: session } = authClient.useSession();
 
   return (
-    <div className="container mx-auto px-4 py-10">
-      <h1 className="text-4xl font-bold text-foreground">Welcome to PPTPilot</h1>
-      <p className="mt-3 max-w-2xl text-muted-foreground">
-        Generate AI-powered presentations in minutes.
-      </p>
-    </div>
-  )
+    <main className="min-h-screen pt-24 pb-12 px-4">
+      <div className="max-w-4xl mx-auto">
+        <h1>Hello, {session?.user?.name ?? "World"}!</h1>
+      </div>
+    </main>
+  );
 }
