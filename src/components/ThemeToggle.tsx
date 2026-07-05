@@ -16,7 +16,7 @@ export default function ThemeToggle() {
       onClick={toggleTheme}
       aria-label={label}
       title={label}
-      className="rounded-xl border border-white/10 px-3 py-2 text-sm font-medium text-zinc-300 transition hover:bg-white/5 hover:text-white"
+      className="rounded-xl border border-[var(--nav-border)] px-3 py-2 text-sm font-medium text-[var(--nav-muted)] transition hover:bg-[var(--nav-hover)] hover:text-[var(--nav-text)]"
     >
       {theme === 'auto' ? 'Auto' : theme === 'dark' ? 'Dark' : 'Light'}
     </button>

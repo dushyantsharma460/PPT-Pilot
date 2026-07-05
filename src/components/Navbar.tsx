@@ -29,19 +29,19 @@ import {
 } from './ui/sheet'
 
 const navLinkClass =
-  'rounded-xl px-4 py-2 text-sm font-medium text-white transition hover:bg-white/5'
+  'rounded-xl px-4 py-2 text-sm font-medium text-[var(--nav-text)] transition hover:bg-[var(--nav-hover)]'
 
 const mobileNavLinkClass =
-  'flex w-full items-center rounded-xl px-4 py-3 text-base font-medium text-white no-underline transition hover:bg-white/5'
+  'flex w-full items-center rounded-xl px-4 py-3 text-base font-medium text-[var(--nav-text)] no-underline transition hover:bg-[var(--nav-hover)]'
 
 const loginButtonClass =
-  'inline-flex items-center justify-center rounded-xl border border-white/10 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/5'
+  'inline-flex items-center justify-center rounded-xl border border-[var(--nav-border)] px-4 py-2 text-sm font-medium text-[var(--nav-text)] transition hover:bg-[var(--nav-hover)]'
 
 const primaryButtonClass =
   'inline-flex items-center justify-center gap-2 rounded-xl bg-lime-500 px-4 py-2 text-sm font-medium text-white transition hover:opacity-90'
 
 const iconButtonClass =
-  'h-9 w-9 shrink-0 rounded-xl text-zinc-300 hover:bg-white/5 hover:text-white sm:h-10 sm:w-10'
+  'h-9 w-9 shrink-0 rounded-xl text-[var(--nav-muted)] hover:bg-[var(--nav-hover)] hover:text-[var(--nav-text)] sm:h-10 sm:w-10'
 
 const profileButtonClass =
   'rounded-full transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/40'
@@ -62,7 +62,7 @@ function UserAvatar({
 
   return (
     <div
-      className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-white/5 font-medium text-white ${className}`}
+      className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--nav-border)] bg-[var(--nav-hover)] font-medium text-[var(--nav-text)] ${className}`}
     >
       {user.image ? (
         <img
@@ -85,18 +85,18 @@ function MobileUserSection({
   onLogout: () => void
 }) {
   return (
-    <div className="mb-4 space-y-3 border-b border-white/10 pb-4">
-      <div className="flex items-center gap-3 rounded-xl bg-white/5 p-3">
+    <div className="mb-4 space-y-3 border-b border-[var(--nav-border)] pb-4">
+      <div className="flex items-center gap-3 rounded-xl bg-[var(--nav-hover)] p-3">
         <UserAvatar user={user} />
         <div className="min-w-0 space-y-1">
-          <p className="truncate font-medium text-white">{user.name}</p>
-          <p className="truncate text-xs text-zinc-400">{user.email}</p>
+          <p className="truncate font-medium text-[var(--nav-text)]">{user.name}</p>
+          <p className="truncate text-xs text-[var(--nav-muted)]">{user.email}</p>
         </div>
       </div>
 
       <Button
         variant="ghost"
-        className="w-full justify-start rounded-xl text-zinc-400 hover:bg-white/5 hover:text-white"
+        className="w-full justify-start rounded-xl text-[var(--nav-muted)] hover:bg-[var(--nav-hover)] hover:text-[var(--nav-text)]"
         disabled
       >
         <User className="h-4 w-4" />
@@ -105,7 +105,7 @@ function MobileUserSection({
 
       <Button
         variant="ghost"
-        className="w-full justify-start rounded-xl text-red-400 hover:bg-white/5 hover:text-red-400"
+        className="w-full justify-start rounded-xl text-red-500 hover:bg-[var(--nav-hover)] hover:text-red-500 dark:text-red-400 dark:hover:text-red-400"
         onClick={onLogout}
       >
         <LogOut className="h-4 w-4" />
@@ -130,7 +130,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 h-14 border-b border-white/5 bg-[#0f0d0b] sm:h-16 md:h-20">
+    <header className="sticky top-0 z-50 h-14 border-b border-[var(--nav-border)] bg-[var(--nav-bg)] backdrop-blur-md sm:h-16 md:h-20">
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-2 px-3 sm:px-4 md:px-6">
         <Link
           to="/"
@@ -140,23 +140,23 @@ export default function Navbar() {
             <Presentation className="h-4 w-4 text-white sm:h-5 sm:w-5" />
           </div>
 
-          <h1 className="truncate text-lg font-bold tracking-tight text-white sm:text-2xl md:text-3xl">
-            PPT<span className="text-lime-400">Pilot</span>
+          <h1 className="truncate text-lg font-bold tracking-tight text-[var(--nav-text)] sm:text-2xl md:text-3xl">
+            PPT<span className="text-lime-500 dark:text-lime-400">Pilot</span>
           </h1>
         </Link>
 
         <nav className="hidden items-center gap-4 lg:gap-6 md:flex">
           <Link
             to="/"
-            activeProps={{ className: 'bg-white/5 !text-white' }}
-            className={`${navLinkClass} !text-white hover:!text-white visited:!text-white`}
+            activeProps={{ className: 'bg-[var(--nav-hover)] !text-[var(--nav-text)]' }}
+            className={`${navLinkClass} !text-[var(--nav-text)] hover:!text-[var(--nav-text)] visited:!text-[var(--nav-text)]`}
           >
             Home
           </Link>
 
           <Link
             to="/"
-            className="flex items-center gap-2 text-sm font-medium text-white no-underline transition hover:bg-white/5 hover:text-white visited:text-white rounded-xl px-4 py-2"
+            className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-[var(--nav-text)] no-underline transition hover:bg-[var(--nav-hover)] hover:text-[var(--nav-text)] visited:text-[var(--nav-text)]"
           >
             <LayoutDashboard className="h-4 w-4 shrink-0" />
             <span className="hidden lg:inline">Dashboard</span>
@@ -181,7 +181,7 @@ export default function Navbar() {
           {!session?.user ? (
             <Link
               to="/login"
-              className={`${loginButtonClass} hidden !text-white hover:!text-white visited:!text-white md:inline-flex`}
+              className={`${loginButtonClass} hidden !text-[var(--nav-text)] hover:!text-[var(--nav-text)] visited:!text-[var(--nav-text)] md:inline-flex`}
             >
               Login
             </Link>
@@ -201,27 +201,27 @@ export default function Navbar() {
                 <DropdownMenuContent
                   align="end"
                   sideOffset={8}
-                  className="z-[9999] w-72 rounded-xl border border-white/10 bg-[#1a1816] p-2 text-white"
+                  className="z-[9999] w-72 rounded-xl border border-[var(--nav-border)] bg-[var(--nav-surface)] p-2 text-[var(--nav-text)] shadow-lg"
                 >
-                  <DropdownMenuLabel className="pb-3 text-white">
+                  <DropdownMenuLabel className="pb-3 text-[var(--nav-text)]">
                     <div className="flex items-center gap-3">
                       <UserAvatar user={session.user} />
                       <div className="min-w-0 space-y-1">
-                        <h4 className="truncate font-medium leading-none text-white">
+                        <h4 className="truncate font-medium leading-none text-[var(--nav-text)]">
                           {session.user.name}
                         </h4>
-                        <p className="truncate text-xs text-zinc-400">
+                        <p className="truncate text-xs text-[var(--nav-muted)]">
                           {session.user.email}
                         </p>
                       </div>
                     </div>
                   </DropdownMenuLabel>
 
-                  <DropdownMenuSeparator className="bg-white/10" />
+                  <DropdownMenuSeparator className="bg-[var(--nav-border)]" />
 
                   <DropdownMenuItem
                     disabled
-                    className="rounded-xl text-zinc-400 focus:bg-white/5 focus:text-white"
+                    className="rounded-xl text-[var(--nav-muted)] focus:bg-[var(--nav-hover)] focus:text-[var(--nav-text)]"
                   >
                     <User className="h-4 w-4" />
                     Profile
@@ -229,7 +229,7 @@ export default function Navbar() {
 
                   <DropdownMenuItem
                     onClick={handleLogout}
-                    className="rounded-xl text-red-400 focus:bg-white/5 focus:text-red-400"
+                    className="rounded-xl text-red-500 focus:bg-[var(--nav-hover)] focus:text-red-500 dark:text-red-400 dark:focus:text-red-400"
                   >
                     <LogOut className="h-4 w-4" />
                     Logout
@@ -253,10 +253,10 @@ export default function Navbar() {
 
             <SheetContent
               side="right"
-              className="w-[min(100vw-2rem,20rem)] border-white/10 bg-[#0f0d0b] p-0 text-white sm:max-w-xs"
+              className="w-[min(100vw-2rem,20rem)] border-[var(--nav-border)] bg-[var(--nav-bg)] p-0 text-[var(--nav-text)] sm:max-w-xs"
             >
-              <SheetHeader className="border-b border-white/10 px-4 py-4 text-left">
-                <SheetTitle className="text-white">Menu</SheetTitle>
+              <SheetHeader className="border-b border-[var(--nav-border)] px-4 py-4 text-left">
+                <SheetTitle className="text-[var(--nav-text)]">Menu</SheetTitle>
               </SheetHeader>
 
               <div className="flex flex-col gap-4 overflow-y-auto px-4 py-4">
@@ -287,9 +287,9 @@ export default function Navbar() {
                 </nav>
 
                 {!session?.user ? (
-                  <div className="flex flex-col gap-2 border-t border-white/10 pt-4">
+                  <div className="flex flex-col gap-2 border-t border-[var(--nav-border)] pt-4">
                     <SheetClose asChild>
-                      <Link to="/login" className={`${mobileNavLinkClass} border border-white/10`}>
+                      <Link to="/login" className={`${mobileNavLinkClass} border border-[var(--nav-border)]`}>
                         Login
                       </Link>
                     </SheetClose>
@@ -301,8 +301,8 @@ export default function Navbar() {
                   </div>
                 ) : null}
 
-                <div className="border-t border-white/10 pt-4 md:hidden">
-                  <p className="mb-2 text-xs font-medium uppercase tracking-wide text-zinc-500">
+                <div className="border-t border-[var(--nav-border)] pt-4 md:hidden">
+                  <p className="mb-2 text-xs font-medium uppercase tracking-wide text-[var(--nav-muted)]">
                     Theme
                   </p>
                   <ThemeToggle />

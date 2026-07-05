@@ -57,7 +57,7 @@ export const Route = createFileRoute('/')({
 })
 
 const fieldSelectClass =
-  'flex h-10 w-full items-center justify-between rounded-full border border-white/10 bg-black/30 px-4 text-sm text-white shadow-none hover:bg-white/5 focus-visible:border-lime-400/30 focus-visible:ring-lime-400/20'
+  'flex h-10 w-full items-center justify-between rounded-full border border-[var(--control-border)] bg-[var(--control-bg)] px-4 text-sm text-[var(--control-text)] shadow-none hover:bg-[var(--nav-hover)] focus-visible:border-lime-500/40 focus-visible:ring-lime-500/20 dark:focus-visible:border-lime-400/30 dark:focus-visible:ring-lime-400/20'
 
 function PptSelectTrigger({
   className,
@@ -71,7 +71,7 @@ function PptSelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronsUpDown className="size-4 shrink-0 text-zinc-500" />
+        <ChevronsUpDown className="size-4 shrink-0 text-[var(--control-muted)]" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   )
@@ -112,7 +112,7 @@ function App() {
     <main className="min-h-[calc(100dvh-3.5rem)] px-4 pb-12 pt-8 sm:min-h-[calc(100dvh-4rem)] sm:pt-10 md:min-h-[calc(100dvh-5rem)]">
       <div className="mx-auto max-w-4xl">
         <div className="mb-8 text-center sm:mb-10">
-          <h1 className="mb-3 text-2xl font-bold leading-tight text-white md:text-3xl">
+          <h1 className="mb-3 text-2xl font-bold leading-tight text-foreground md:text-3xl">
             Hello, {session?.user?.name ?? 'World'}!
             <span className="mt-1 block sm:mt-0 sm:inline sm:ml-1">
               What do you want to{' '}
@@ -120,7 +120,7 @@ function App() {
             </span>
           </h1>
 
-          <p className="text-base text-zinc-400 sm:text-lg">
+          <p className="text-base text-muted-foreground sm:text-lg">
             Enter your content and we&apos;ll generate a beautiful presentation
           </p>
         </div>
@@ -135,19 +135,19 @@ function App() {
                 content: e.target.value,
               }))
             }
-            className="min-h-[200px] w-full resize-none rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-base leading-7 text-white shadow-none backdrop-blur-sm placeholder:text-zinc-500 focus-visible:border-lime-400/30 focus-visible:ring-lime-400/20"
+            className="min-h-[200px] w-full resize-none rounded-2xl border border-[var(--control-border)] bg-[var(--control-bg)] px-4 py-3 text-base leading-7 text-[var(--control-text)] shadow-none backdrop-blur-sm placeholder:text-[var(--control-muted)] focus-visible:border-lime-500/40 focus-visible:ring-lime-500/20 dark:focus-visible:border-lime-400/30 dark:focus-visible:ring-lime-400/20"
           />
 
-          <div className="mt-4 flex items-center justify-between px-1 text-xs text-zinc-500">
+          <div className="mt-4 flex items-center justify-between px-1 text-xs text-muted-foreground">
             <span>{form.content.length.toLocaleString()} characters</span>
             <span>Markdown supported</span>
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <div className="flex flex-col gap-3">
-              <Label className="text-sm font-medium text-zinc-400">
+              <Label className="text-sm font-medium text-muted-foreground">
                 Slides:{' '}
-                <span className="font-semibold text-white">{form.slideCount}</span>
+                <span className="font-semibold text-foreground">{form.slideCount}</span>
               </Label>
 
               <div className="flex h-10 items-center px-1">
@@ -171,7 +171,7 @@ function App() {
             </div>
 
             <div className="flex flex-col gap-3">
-              <Label className="text-sm font-medium text-zinc-400">Style</Label>
+              <Label className="text-sm font-medium text-muted-foreground">Style</Label>
               <Select
                 value={form.style}
                 onValueChange={(value) =>
@@ -195,7 +195,7 @@ function App() {
             </div>
 
             <div className="flex flex-col gap-3">
-              <Label className="text-sm font-medium text-zinc-400">Tone</Label>
+              <Label className="text-sm font-medium text-muted-foreground">Tone</Label>
               <Select
                 value={form.tone}
                 onValueChange={(value) =>
@@ -219,7 +219,7 @@ function App() {
             </div>
 
             <div className="flex flex-col gap-3">
-              <Label className="text-sm font-medium text-zinc-400">Layout</Label>
+              <Label className="text-sm font-medium text-muted-foreground">Layout</Label>
               <Select
                 value={form.layout}
                 onValueChange={(value) =>
