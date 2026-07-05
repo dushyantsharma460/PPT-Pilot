@@ -36,10 +36,23 @@
   --sidebar-accent-foreground: oklch(0.218 0.008 223.9);
   --sidebar-border: oklch(0.925 0.005 214.3);
   --sidebar-ring: oklch(0.723 0.014 214.4);
-  --glass-bg: rgba(255, 255, 255, 0.62);
-  --glass-border: rgba(255, 255, 255, 0.45);
+  --nav-bg: #0f0d0b;
+  --nav-surface: #1a1816;
+  --nav-border: rgba(255, 255, 255, 0.1);
+  --nav-text: #ffffff;
+  --nav-muted: #a1a1aa;
+  --nav-accent: #84cc16;
+  --nav-accent-light: #a3e635;
+  --nav-hover: rgba(255, 255, 255, 0.05);
+  --control-bg: rgba(15, 13, 11, 0.05);
+  --control-border: rgba(15, 13, 11, 0.12);
+  --control-text: var(--foreground);
+  --control-muted: var(--muted-foreground);
+  --control-surface: #ffffff;
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(15, 13, 11, 0.08);
   --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
-  --glass-highlight: rgba(255, 255, 255, 0.85);
+  --glass-highlight: rgba(255, 255, 255, 0.9);
 }
 
 .dark {
@@ -74,7 +87,12 @@
   --sidebar-accent-foreground: oklch(0.987 0.002 197.1);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.56 0.021 213.5);
-  --glass-bg: rgba(15, 13, 11, 0.68);
+  --control-bg: var(--nav-hover);
+  --control-border: var(--nav-border);
+  --control-text: var(--nav-text);
+  --control-muted: var(--nav-muted);
+  --control-surface: var(--nav-surface);
+  --glass-bg: rgba(15, 13, 11, 0.72);
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.42);
   --glass-highlight: rgba(255, 255, 255, 0.06);
@@ -138,26 +156,26 @@ body {
   font-family: var(--font-sans);
   background-color: var(--background);
   background-image:
-    radial-gradient(900px 420px at 10% -10%, oklch(0.841 0.238 128.85 / 0.14), transparent 60%),
-    radial-gradient(700px 360px at 100% 0%, oklch(0.768 0.233 130.85 / 0.1), transparent 55%);
+    radial-gradient(900px 420px at 10% -10%, rgba(132, 204, 22, 0.12), transparent 60%),
+    radial-gradient(700px 360px at 100% 0%, rgba(163, 230, 53, 0.08), transparent 55%);
   color: var(--foreground);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .dark body {
-  background-color: oklch(0.12 0.006 228);
+  background-color: var(--nav-bg);
   background-image:
-    radial-gradient(900px 420px at 10% -10%, oklch(0.768 0.233 130.85 / 0.16), transparent 60%),
-    radial-gradient(700px 360px at 100% 0%, oklch(0.648 0.2 131.684 / 0.1), transparent 55%);
+    radial-gradient(900px 420px at 10% -10%, rgba(132, 204, 22, 0.14), transparent 60%),
+    radial-gradient(700px 360px at 100% 0%, rgba(163, 230, 53, 0.08), transparent 55%);
 }
 
 .glass {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  background: rgba(26, 24, 22, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
-    var(--glass-shadow),
-    inset 0 1px 0 var(--glass-highlight);
+    0 12px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(18px) saturate(140%);
   -webkit-backdrop-filter: blur(18px) saturate(140%);
 }
@@ -165,11 +183,97 @@ body {
 .text-gradient-peach {
   background: linear-gradient(
     135deg,
-    oklch(0.841 0.238 128.85),
-    oklch(0.768 0.233 130.85),
+    var(--nav-accent-light),
+    var(--nav-accent),
     oklch(0.82 0.16 75)
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
+
+/* Native slide range — lime track + white thumb */
+.ppt-slide-range {
+  --slide-progress: 50%;
+  appearance: none;
+  width: 100%;
+  height: 1.5rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.ppt-slide-range:focus {
+  outline: none;
+}
+
+.ppt-slide-range:focus-visible::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 4px rgba(132, 204, 22, 0.25),
+    0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.ppt-slide-range::-webkit-slider-runnable-track {
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    #84cc16 0%,
+    #84cc16 var(--slide-progress),
+    rgba(255, 255, 255, 0.15) var(--slide-progress),
+    rgba(255, 255, 255, 0.15) 100%
+  );
+}
+
+.ppt-slide-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-top: -0.3125rem;
+  border: none;
+  border-radius: 9999px;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.ppt-slide-range::-moz-range-track {
+  height: 0.375rem;
+  border: none;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.ppt-slide-range::-moz-range-progress {
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: #84cc16;
+}
+
+.ppt-slide-range::-moz-range-thumb {
+  width: 0.875rem;
+  height: 0.875rem;
+  border: none;
+  border-radius: 9999px;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+/* Dropdown trigger + menu */
+.ppt-dropdown {
+  z-index: 50;
+  width: var(--radix-select-trigger-width);
+  min-width: var(--radix-select-trigger-width);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  background: #1a1816;
+  color: #ffffff;
+}
+
+.ppt-dropdown [data-slot="select-item"][data-highlighted] {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.ppt-dropdown [data-slot="select-item"][data-state="checked"] {
+  color: #a3e635;
+}
+
