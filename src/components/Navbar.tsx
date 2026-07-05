@@ -31,6 +31,9 @@ import {
 const navLinkClass =
   'rounded-xl px-4 py-2 text-sm font-medium text-white transition hover:bg-white/5'
 
+const mobileNavLinkClass =
+  'flex w-full items-center rounded-xl px-4 py-3 text-base font-medium text-white no-underline transition hover:bg-white/5'
+
 const loginButtonClass =
   'inline-flex items-center justify-center rounded-xl border border-white/10 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/5'
 
@@ -38,7 +41,7 @@ const primaryButtonClass =
   'inline-flex items-center justify-center gap-2 rounded-xl bg-lime-500 px-4 py-2 text-sm font-medium text-white transition hover:opacity-90'
 
 const iconButtonClass =
-  'h-10 w-10 rounded-xl text-zinc-300 hover:bg-white/5 hover:text-white'
+  'h-9 w-9 shrink-0 rounded-xl text-zinc-300 hover:bg-white/5 hover:text-white sm:h-10 sm:w-10'
 
 const profileButtonClass =
   'rounded-full transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/40'
@@ -74,6 +77,44 @@ function UserAvatar({
   )
 }
 
+function MobileUserSection({
+  user,
+  onLogout,
+}: {
+  user: { name?: string | null; email?: string | null; image?: string | null }
+  onLogout: () => void
+}) {
+  return (
+    <div className="mb-4 space-y-3 border-b border-white/10 pb-4">
+      <div className="flex items-center gap-3 rounded-xl bg-white/5 p-3">
+        <UserAvatar user={user} />
+        <div className="min-w-0 space-y-1">
+          <p className="truncate font-medium text-white">{user.name}</p>
+          <p className="truncate text-xs text-zinc-400">{user.email}</p>
+        </div>
+      </div>
+
+      <Button
+        variant="ghost"
+        className="w-full justify-start rounded-xl text-zinc-400 hover:bg-white/5 hover:text-white"
+        disabled
+      >
+        <User className="h-4 w-4" />
+        Profile
+      </Button>
+
+      <Button
+        variant="ghost"
+        className="w-full justify-start rounded-xl text-red-400 hover:bg-white/5 hover:text-red-400"
+        onClick={onLogout}
+      >
+        <LogOut className="h-4 w-4" />
+        Logout
+      </Button>
+    </div>
+  )
+}
+
 export default function Navbar() {
   const router = useRouter()
   const pathname = useRouterState({ select: (state) => state.location.pathname })
@@ -89,22 +130,25 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 h-20 border-b border-white/5 bg-[#0f0d0b]">
-      <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center gap-3 no-underline">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-lime-500">
-            <Presentation className="h-5 w-5 text-white" />
+    <header className="sticky top-0 z-50 h-14 border-b border-white/5 bg-[#0f0d0b] sm:h-16 md:h-20">
+      <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-2 px-3 sm:px-4 md:px-6">
+        <Link
+          to="/"
+          className="flex min-w-0 items-center gap-2 no-underline sm:gap-3"
+        >
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-lime-500 sm:h-10 sm:w-10 md:h-11 md:w-11">
+            <Presentation className="h-4 w-4 text-white sm:h-5 sm:w-5" />
           </div>
 
-          <h1 className="text-3xl font-bold tracking-tight text-white">
+          <h1 className="truncate text-lg font-bold tracking-tight text-white sm:text-2xl md:text-3xl">
             PPT<span className="text-lime-400">Pilot</span>
           </h1>
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-4 lg:gap-6 md:flex">
           <Link
             to="/"
-            activeProps={{ className: "bg-white/5 !text-white" }}
+            activeProps={{ className: 'bg-white/5 !text-white' }}
             className={`${navLinkClass} !text-white hover:!text-white visited:!text-white`}
           >
             Home
@@ -112,82 +156,87 @@ export default function Navbar() {
 
           <Link
             to="/"
-            className="flex items-center gap-2 text-white no-underline hover:text-white visited:text-white"
+            className="flex items-center gap-2 text-sm font-medium text-white no-underline transition hover:bg-white/5 hover:text-white visited:text-white rounded-xl px-4 py-2"
           >
-            <LayoutDashboard className="h-4 w-4" />
-            <span className="text-white">Dashboard</span>
+            <LayoutDashboard className="h-4 w-4 shrink-0" />
+            <span className="hidden lg:inline">Dashboard</span>
+            <span className="lg:hidden">Dash</span>
           </Link>
 
           <Link
             to="/"
             className={`${primaryButtonClass} !text-white hover:!text-white visited:!text-white`}
           >
-            <Plus className="h-4 w-4" />
-            Create PPT
+            <Plus className="h-4 w-4 shrink-0" />
+            <span className="hidden lg:inline">Create PPT</span>
+            <span className="lg:hidden">Create</span>
           </Link>
         </nav>
 
-        <div className="flex items-center gap-5">
-          <ThemeToggle />
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2 md:gap-4">
+          <div className="hidden md:block">
+            <ThemeToggle />
+          </div>
 
           {!session?.user ? (
-            <div className="hidden items-center gap-3 sm:flex">
-              <Link
-                to="/login"
-                className={`${loginButtonClass} !text-white hover:!text-white visited:!text-white`}
-              >
-                Login
-              </Link>
-            </div>
+            <Link
+              to="/login"
+              className={`${loginButtonClass} hidden !text-white hover:!text-white visited:!text-white md:inline-flex`}
+            >
+              Login
+            </Link>
           ) : (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  type="button"
-                  aria-label="Open account menu"
-                  className={profileButtonClass}
-                >
-                  <UserAvatar user={session.user} />
-                </button>
-              </DropdownMenuTrigger>
+            <div className="hidden md:block">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    aria-label="Open account menu"
+                    className={profileButtonClass}
+                  >
+                    <UserAvatar user={session.user} className="h-9 w-9 md:h-10 md:w-10" />
+                  </button>
+                </DropdownMenuTrigger>
 
-              <DropdownMenuContent
-                align="end"
-                className="w-72 rounded-xl border border-white/10 bg-[#1a1816] p-2 text-white"
-              >
-                <DropdownMenuLabel className="pb-3 text-white">
-                  <div className="flex items-center gap-3">
-                    <UserAvatar user={session.user} />
-                    <div className="space-y-1">
-                      <h4 className="font-medium leading-none text-white">
-                        {session.user.name}
-                      </h4>
-                      <p className="text-xs text-zinc-400">
-                        {session.user.email}
-                      </p>
+                <DropdownMenuContent
+                  align="end"
+                  sideOffset={8}
+                  className="z-[9999] w-72 rounded-xl border border-white/10 bg-[#1a1816] p-2 text-white"
+                >
+                  <DropdownMenuLabel className="pb-3 text-white">
+                    <div className="flex items-center gap-3">
+                      <UserAvatar user={session.user} />
+                      <div className="min-w-0 space-y-1">
+                        <h4 className="truncate font-medium leading-none text-white">
+                          {session.user.name}
+                        </h4>
+                        <p className="truncate text-xs text-zinc-400">
+                          {session.user.email}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </DropdownMenuLabel>
+                  </DropdownMenuLabel>
 
-                <DropdownMenuSeparator className="bg-white/10" />
+                  <DropdownMenuSeparator className="bg-white/10" />
 
-                <DropdownMenuItem
-                  disabled
-                  className="rounded-xl text-zinc-400 focus:bg-white/5 focus:text-white"
-                >
-                  <User className="h-4 w-4" />
-                  Profile
-                </DropdownMenuItem>
+                  <DropdownMenuItem
+                    disabled
+                    className="rounded-xl text-zinc-400 focus:bg-white/5 focus:text-white"
+                  >
+                    <User className="h-4 w-4" />
+                    Profile
+                  </DropdownMenuItem>
 
-                <DropdownMenuItem
-                  onClick={handleLogout}
-                  className="rounded-xl text-red-400 focus:bg-white/5 focus:text-red-400"
-                >
-                  <LogOut className="h-4 w-4" />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="rounded-xl text-red-400 focus:bg-white/5 focus:text-red-400"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           )}
 
           <Sheet>
@@ -204,57 +253,61 @@ export default function Navbar() {
 
             <SheetContent
               side="right"
-              className="w-full max-w-xs border-white/10 bg-[#0f0d0b] text-white"
+              className="w-[min(100vw-2rem,20rem)] border-white/10 bg-[#0f0d0b] p-0 text-white sm:max-w-xs"
             >
-              <SheetHeader>
+              <SheetHeader className="border-b border-white/10 px-4 py-4 text-left">
                 <SheetTitle className="text-white">Menu</SheetTitle>
               </SheetHeader>
 
-              <nav className="flex flex-col gap-2 px-4">
-                <SheetClose asChild>
-                  <Link to="/" className={navLinkClass}>
-                    Home
-                  </Link>
-                </SheetClose>
+              <div className="flex flex-col gap-4 overflow-y-auto px-4 py-4">
+                {session?.user ? (
+                  <MobileUserSection user={session.user} onLogout={handleLogout} />
+                ) : null}
 
-                <SheetClose asChild>
-                  <Link to="/" className={`flex items-center gap-2 ${navLinkClass}`}>
-                    <LayoutDashboard className="h-4 w-4" />
-                    Dashboard
-                  </Link>
-                </SheetClose>
+                <nav className="flex flex-col gap-1">
+                  <SheetClose asChild>
+                    <Link to="/" className={mobileNavLinkClass}>
+                      Home
+                    </Link>
+                  </SheetClose>
 
-                <SheetClose asChild>
-                  <Link to="/" className={primaryButtonClass}>
-                    <Plus className="h-4 w-4" />
-                    Create PPT
-                  </Link>
-                </SheetClose>
+                  <SheetClose asChild>
+                    <Link to="/" className={mobileNavLinkClass}>
+                      <LayoutDashboard className="mr-2 h-4 w-4 shrink-0" />
+                      Dashboard
+                    </Link>
+                  </SheetClose>
+
+                  <SheetClose asChild>
+                    <Link to="/" className={`${mobileNavLinkClass} bg-lime-500 hover:bg-lime-500/90`}>
+                      <Plus className="mr-2 h-4 w-4 shrink-0" />
+                      Create PPT
+                    </Link>
+                  </SheetClose>
+                </nav>
 
                 {!session?.user ? (
-                  <>
+                  <div className="flex flex-col gap-2 border-t border-white/10 pt-4">
                     <SheetClose asChild>
-                      <Link to="/login" className={loginButtonClass}>
+                      <Link to="/login" className={`${mobileNavLinkClass} border border-white/10`}>
                         Login
                       </Link>
                     </SheetClose>
                     <SheetClose asChild>
-                      <Link to="/login" className={primaryButtonClass}>
+                      <Link to="/login" className={`${mobileNavLinkClass} bg-lime-500 hover:bg-lime-500/90`}>
                         Get Started
                       </Link>
                     </SheetClose>
-                  </>
-                ) : (
-                  <Button
-                    variant="ghost"
-                    className="justify-start rounded-xl text-red-400 hover:bg-white/5 hover:text-red-400"
-                    onClick={handleLogout}
-                  >
-                    <LogOut className="h-4 w-4" />
-                    Logout
-                  </Button>
-                )}
-              </nav>
+                  </div>
+                ) : null}
+
+                <div className="border-t border-white/10 pt-4 md:hidden">
+                  <p className="mb-2 text-xs font-medium uppercase tracking-wide text-zinc-500">
+                    Theme
+                  </p>
+                  <ThemeToggle />
+                </div>
+              </div>
             </SheetContent>
           </Sheet>
         </div>
