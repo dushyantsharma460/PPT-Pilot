@@ -22,6 +22,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { Select as SelectPrimitive } from 'radix-ui'
 import { ChevronsUpDown, Sparkles, Wand2 } from 'lucide-react'
 import { useState, type CSSProperties, type ComponentProps } from 'react'
+import { PRESENTATION_TEMPLATES } from '#/features/presentation/constant/presentation-templates'
 
 type HomeFormState = {
   content: string
@@ -247,22 +248,51 @@ function App() {
               size="lg"
               onClick={handleGenerate}
               disabled={isGenerating || !form.content.trim()}
-              className="gap-2 rounded-xl bg-lime-500 px-8 font-semibold text-white hover:bg-lime-400"
+              className="flex items-center justify-center gap-2 rounded-xl bg-lime-500 py-3 px-7 font-semibold text-white hover:bg-lime-400"
             >
               {isGenerating ? (
                 <>
                   <Sparkles className="size-5 animate-pulse" />
-                  Creating…
+                  <span>Creating...</span>
                 </>
               ) : (
                 <>
                   <Wand2 className="size-5" />
-                  Generate PPT
+                  <span>Generate PPT</span>
                 </>
               )}
             </Button>
           </div>
+
         </div>
+
+        <div className='mt-8'>
+          <p className="text-center text-sm text-muted-foreground mb-3">
+            Try a template
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-2">
+            {PRESENTATION_TEMPLATES.map((template) => (
+              <button
+                key={template.id}
+                type="button"
+                onClick={() => {
+                  setForm({
+                    content: template.content,
+                    slideCount: template.slides,
+                    style: template.style,
+                    tone: template.tone,
+                    layout: template.layout,
+                  })
+                }}
+                className="px-4 py-2 text-sm rounded-full border border-border/50 bg-card/50 text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-primary/5 transition-all"
+              >
+                {template.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
       </div>
     </main>
   )
