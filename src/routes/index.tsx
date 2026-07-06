@@ -23,6 +23,7 @@ import { Select as SelectPrimitive } from 'radix-ui'
 import { ChevronsUpDown, Sparkles, Wand2 } from 'lucide-react'
 import { useState, type CSSProperties, type ComponentProps } from 'react'
 import { PRESENTATION_TEMPLATES } from '#/features/presentation/constant/presentation-templates'
+import { createPresentation } from '#/features/presentation/actions'
 
 type HomeFormState = {
   content: string
@@ -32,8 +33,8 @@ type HomeFormState = {
   layout: SlideLayout
 }
 
-const SLIDE_MIN = 5
-const SLIDE_MAX = 30
+const SLIDE_MIN = 3
+const SLIDE_MAX = 20
 
 export const Route = createFileRoute('/')({
   beforeLoad: async ({ location }) => {
@@ -97,8 +98,15 @@ function App() {
 
     setIsGenerating(true)
     try {
-      await new Promise((resolve) => setTimeout(resolve, 600))
-      console.info('Generate PPT', form)
+      await createPresentation({
+        data: {
+          prompt: form.content.trim(),
+          slideCount: form.slideCount,
+          style: form.style,
+          tone: form.tone,
+          layout: form.layout,
+        },
+      })
     } finally {
       setIsGenerating(false)
     }
