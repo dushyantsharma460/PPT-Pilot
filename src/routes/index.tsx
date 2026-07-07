@@ -18,12 +18,16 @@ import {
   type SlideStyle,
   type SlideTone,
 } from '#/features/presentation/constant/presentation-options'
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { Select as SelectPrimitive } from 'radix-ui'
 import { ChevronsUpDown, Sparkles, Wand2 } from 'lucide-react'
 import { useState, type CSSProperties, type ComponentProps } from 'react'
 import { PRESENTATION_TEMPLATES } from '#/features/presentation/constant/presentation-templates'
 import { createPresentation } from '#/features/presentation/actions'
+import { presentationQueryKeys } from '#/features/presentation/hooks/query-keys'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
+
 
 type HomeFormState = {
   content: string
@@ -83,6 +87,8 @@ function slideProgress(value: number) {
 }
 
 function App() {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const { data: session } = authClient.useSession()
   const [form, setForm] = useState<HomeFormState>({
     content: '',
@@ -91,14 +97,10 @@ function App() {
     tone: 'formal',
     layout: 'balanced',
   })
-  const [isGenerating, setIsGenerating] = useState(false)
 
-  const handleGenerate = async () => {
-    if (!form.content.trim() || isGenerating) return
-
-    setIsGenerating(true)
-    try {
-      await createPresentation({
+  const createMutation = useMutation({
+    mutationFn: () =>
+      createPresentation({
         data: {
           prompt: form.content.trim(),
           slideCount: form.slideCount,
@@ -106,10 +108,35 @@ function App() {
           tone: form.tone,
           layout: form.layout,
         },
+      }),
+
+    onSuccess: (presentation) => {
+      toast.success('Presentation created successfully!')
+
+      queryClient.invalidateQueries({
+        queryKey: presentationQueryKeys.list(),
       })
-    } finally {
-      setIsGenerating(false)
+
+      navigate({
+        to: '/presentations/$presentationId',
+        params: {
+          presentationId: presentation.id,
+        },
+      })
+    },
+
+    onError: (error) => {
+      toast.error(`Failed to create presentation: ${error.message}`)
+    },
+  })
+
+  const handleGenerate = async () => {
+    if (!form.content.trim()) {
+      toast.error('Please enter some content to generate a presentation.')
+      return;
     }
+
+    createMutation.mutate()
   }
 
   const sliderStyle = {
@@ -255,10 +282,10 @@ function App() {
             <Button
               size="lg"
               onClick={handleGenerate}
-              disabled={isGenerating || !form.content.trim()}
+              disabled={createMutation.isPending || !form.content.trim()}
               className="flex items-center justify-center gap-2 rounded-xl bg-lime-500 py-3 px-7 font-semibold text-white hover:bg-lime-400"
             >
-              {isGenerating ? (
+              {createMutation.isPending ? (
                 <>
                   <Sparkles className="size-5 animate-pulse" />
                   <span>Creating...</span>
