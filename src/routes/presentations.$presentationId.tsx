@@ -8,7 +8,8 @@ import { LAYOUT_OPTIONS, SLIDE_STYLES, TONE_OPTIONS } from '#/features/presentat
 import { usePresentationDetail } from '#/features/presentation/hooks/usePresentation-detail';
 import { presentationThumbnailUrl } from '#/features/presentation/utils';
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { ArrowLeft, ChevronLeft, ChevronRight, Download, Link, Maximize, Play, RefreshCw, Save, Trash2 } from 'lucide-react';
+import { Link } from "@tanstack/react-router"
+import { ChevronLeft, ChevronRight, Home, Download, Maximize, Play, RefreshCw, Save, Trash2, Settings } from 'lucide-react';
 import { useState } from 'react';
 import { SlideCard } from '#/features/presentation/components/slide-card'
 import { SlidePreview } from '#/features/presentation/components/slide-preview'
@@ -97,7 +98,6 @@ function RouteComponent() {
                     Error loading presentation: {query.error.message}
                 </div>
                 <Button asChild variant='outline' className='rounded-xl'>
-                    <Link className='mr-2 h-4 w-4' />
                     <a href='/'>Back to home</a>
                 </Button>
             </main>
@@ -116,15 +116,9 @@ function RouteComponent() {
             <div className="max-w-6xl mx-auto space-y-6">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
-                        <Button
-                            asChild
-                            variant="ghost"
-                            size="sm"
-                            className="rounded-xl gap-1"
-                        >
+                        <Button asChild variant="ghost" size="icon" className="rounded-xl">
                             <Link to="/">
-                                <ArrowLeft className="size-4" />
-                                Home
+                                <Home className="h-5 w-5" />
                             </Link>
                         </Button>
 
@@ -150,55 +144,59 @@ function RouteComponent() {
                                     {slides.length} slides
                                 </p>
                             </div>
-                            <div className="flex flex-wrap gap-2">
+
+                            <div className="flex items-center justify-center gap-2">
                                 {slides.length > 0 && (
                                     <>
                                         <Button
                                             variant="outline"
-                                            size="sm"
-                                            className="rounded-xl gap-1"
+                                            size="icon"
+                                            className="rounded-xl"
                                             onClick={() => setShowSlideShow(true)}
+                                            title="Slideshow"
                                         >
                                             <Play className="size-4" />
-                                            <span className="hidden sm:inline">Slideshow</span>
                                         </Button>
+
                                         <Button
                                             variant="outline"
-                                            size="sm"
-                                            className="rounded-xl gap-1"
+                                            size="icon"
+                                            className="rounded-xl"
                                             onClick={() => { }}
                                             disabled={isExporting}
+                                            title={isExporting ? "Exporting..." : "Export"}
                                         >
                                             <Download className="size-4" />
-                                            <span className="hidden sm:inline">
-                                                {isExporting ? 'Exporting…' : 'Export'}
-                                            </span>
                                         </Button>
                                     </>
                                 )}
+
                                 <Button
                                     variant="outline"
-                                    size="sm"
-                                    className="rounded-xl gap-1"
+                                    size="icon"
+                                    className="rounded-xl"
                                     disabled={regenerateMut.isPending || isGenerating}
                                     onClick={() => regenerateMut.mutate()}
+                                    title={isGenerating ? "Generating..." : "Regenerate"}
                                 >
                                     <RefreshCw
-                                        className={`size-4 ${isGenerating ? 'animate-spin' : ''}`}
+                                        className={`size-4 ${isGenerating ? "animate-spin" : ""}`}
                                     />
-                                    <span className="hidden sm:inline">
-                                        {isGenerating ? 'Generating…' : 'Regenerate'}
-                                    </span>
                                 </Button>
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="rounded-xl"
+                                    className="rounded-xl gap-2"
                                     onClick={() => setShowSettings(!showSettings)}
                                 >
-                                    {showSettings ? 'Hide settings' : 'Edit settings'}
+                                    {/* <Settings className="size-4" /> */}
+                                    <span className="hidden sm:inline">
+                                        {showSettings ? "Hide Settings" : "Edit Settings"}
+                                    </span>
                                 </Button>
+
                             </div>
+
                         </div>
 
                         {showSettings && (

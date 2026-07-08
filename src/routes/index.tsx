@@ -127,6 +127,7 @@ function App() {
 
     onError: (error) => {
       toast.error(`Failed to create presentation: ${error.message}`)
+      // console.error(error)
     },
   })
 

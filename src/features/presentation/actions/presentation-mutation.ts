@@ -9,6 +9,7 @@ import {
   updatePresentationInputSchema,
 } from '../types/schema'
 import { getOwnedPresentation } from '../lib/get-owned-presentation'
+import { inngest } from '#/integrations/tanstack-query/inngest/client'
 
 export const createPresentation = createServerFn({ method: 'POST' })
   .inputValidator((data: unknown) => createPresentationInputSchema.parse(data))
@@ -29,7 +30,11 @@ export const createPresentation = createServerFn({ method: 'POST' })
       },
     })
 
-    // TODO: inngest background job trigger
+    //inngest togic
+    await inngest.send({
+      name: "presentation/generate",
+      data: {presentationId: presentation.id}
+    })
 
     return presentation
   })
