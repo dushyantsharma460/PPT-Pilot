@@ -23,10 +23,11 @@ import { Select as SelectPrimitive } from 'radix-ui'
 import { ChevronsUpDown, Sparkles, Wand2 } from 'lucide-react'
 import { useState, type CSSProperties, type ComponentProps } from 'react'
 import { PRESENTATION_TEMPLATES } from '#/features/presentation/constant/presentation-templates'
-import { createPresentation } from '#/features/presentation/actions'
+import { createPresentation, listPresentations } from '#/features/presentation/actions'
 import { presentationQueryKeys } from '#/features/presentation/hooks/query-keys'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
+import { PresentationListSection } from '#/features/presentation/components/presentaion-list-section'
 
 
 type HomeFormState = {
@@ -98,6 +99,11 @@ function App() {
     layout: 'balanced',
   })
 
+  const {data: presentations = [] , isPending: listPending} = useQuery({
+    queryKey: presentationQueryKeys.list(),
+    queryFn: () => listPresentations()
+  })
+
   const createMutation = useMutation({
     mutationFn: () =>
       createPresentation({
@@ -147,6 +153,7 @@ function App() {
   return (
     <main className="min-h-[calc(100dvh-3.5rem)] px-4 pb-12 pt-8 sm:min-h-[calc(100dvh-4rem)] sm:pt-10 md:min-h-[calc(100dvh-5rem)]">
       <div className="mx-auto max-w-4xl">
+        <PresentationListSection presentations={presentations} isPending={listPending}/>
         <div className="mb-8 text-center sm:mb-10">
           <h1 className="mb-3 text-2xl font-bold leading-tight text-foreground md:text-3xl">
             Hello, {session?.user?.name ?? 'World'}!

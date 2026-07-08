@@ -19,6 +19,7 @@ import * as SelectPrimitive from '@radix-ui/react-select'
 import { ChevronsUpDown } from 'lucide-react'
 import { cn } from '#/lib/utils'
 import type { ComponentProps } from 'react'
+import { useFullscreen } from '#/features/presentation/hooks/use-fullscreen';
 
 export const SLIDE_MIN = 3
 export const SLIDE_MAX = 20
@@ -66,7 +67,9 @@ function RouteComponent() {
     const [showSettings, setShowSettings] = useState(false);
     const [showSlideShow, setShowSlideShow] = useState(false);
     const [isExporting, setIsExporting] = useState(false);
-    const [isFullscreen, setIsFullscreen] = useState(false)
+    const {isFullscreen, toggleFullscreen} = useFullscreen(
+        "slide-preview-container"
+    )
 
     const {
         query,
@@ -424,7 +427,7 @@ function RouteComponent() {
                                         size="icon"
                                         className={`absolute top-3 right-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity ${isFullscreen ? 'opacity-100' : ''
                                             }`}
-                                        onClick={() => { }}
+                                        onClick={ toggleFullscreen }
                                     >
                                         <Maximize className="size-4" />
                                     </Button>
